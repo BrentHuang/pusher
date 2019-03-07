@@ -17,7 +17,12 @@ Camera::Camera()
 
     qDebug() << "default camera: " << QCameraInfo::defaultCamera().description();
 
-    camera_ = new QCamera(QCameraInfo::defaultCamera(), this);
+//    camera_ = new QCamera(QCameraInfo::defaultCamera(), this);
+    if (QCameraInfo::availableCameras().length() > 1)
+    {
+        camera_ = new QCamera(QCameraInfo::availableCameras().at(1), this);
+    }
+
     viewfinder_ = new QCameraViewfinder(this);
     capturer_ = new QCameraImageCapture(camera_);
 
@@ -117,6 +122,7 @@ Camera::Camera()
     {
         qDebug() << "failed to set output location";
     }
+    qDebug() << recorder_->outputLocation();
 }
 
 Camera::~Camera()
@@ -136,11 +142,11 @@ void Camera::OnRecordButton()
 
 void Camera::OnImageCaptured(int id, const QImage& preview)
 {
-    QString savepath = QFileDialog::getSaveFileName(this, "Save Capture", "Capture", "Image png(*.png);;Image jpg(*.jpg);;Image bmp(*.bmp)");
-    if (!savepath.isEmpty())
-    {
-        preview.save(savepath);
-    }
+//    QString savepath = QFileDialog::getSaveFileName(this, "Save Capture", "Capture", "Image png(*.png);;Image jpg(*.jpg);;Image bmp(*.bmp)");
+//    if (!savepath.isEmpty())
+//    {
+//        preview.save(savepath);
+//    }
 }
 
 void Camera::OnVideoFrame(const QVideoFrame& frame)
